@@ -1,19 +1,20 @@
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 
 
 const login = () => {
+    const {data:session}=useSession();
     const { register,formState: { errors }, handleSubmit } = useForm();
     const [loginerror,setLoginerror]=useState(' ')
     const onSubmit = data => console.log(data);
-    const submit=()=>{
-       
-    }
+    const submit=()=>{}
  
 
     return (
         <div className=' h-[600px] flex justify-center items-center'>
+            
         <div className='w-96'>
         <h1 className='text-center text-2xl font-bold'>Login</h1>
             <form onSubmit={handleSubmit(onSubmit)}>   
@@ -37,7 +38,7 @@ const login = () => {
             <div>{loginerror && <p className='text-red-500'>{loginerror}</p>}</div>
             <p className='text-center'>New to Traveling Blog? <Link href="/singup" className='text-secondary'>Create a New Account</Link></p>
             <div className="divider">OR</div>
-            <button onClick={submit} className=' w-full btn btn-outline btn-accent'>CONTINUE WITH GOOGLE</button>
+            <button onClick={()=>signIn()} className=' w-full btn btn-outline btn-accent'>CONTINUE WITH GOOGLE</button>
             </div>
  
     </div>

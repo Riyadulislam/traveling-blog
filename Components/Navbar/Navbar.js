@@ -1,13 +1,18 @@
+import { signOut, useSession } from "next-auth/react";
+import CredentialsProvider from "next-auth/providers/credentials";
+
 import Link from "next/link";
 
 const Navbar = () => {
-  
- 
- 
+   const {data:session}=useSession()
     const menuItems = <>
         <li><Link href="/addblog">Add Blog</Link></li>
+      
         <li><Link href="/myblog">My Blog</Link></li>
-        <li><Link href="/login">Login</Link></li>
+        {session?.user.email ?<li><Link onClick={()=>signOut()} href="/login">Logout</Link></li>
+        :  <li><Link href="/login">Login</Link></li>
+        }
+      
     </>
 
     return (
@@ -19,9 +24,11 @@ const Navbar = () => {
                     </label>
                     <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                      {menuItems}
+                     
                     </ul>
                 </div>
                 <Link  href="/" className="btn btn-ghost normal-case text-xl">Traveling Blog</Link>
+                <p className="text-red">{session?.user.email}</p>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
