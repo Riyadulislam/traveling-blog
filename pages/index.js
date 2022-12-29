@@ -4,10 +4,24 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import tour from '../public/Tour.jpg'
 import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const [data, setData] = useState([])
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    fetch('http://localhost:5000/blogOptions')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data)
+        setLoading(false)
+      })
+  }, [])
+  console.log(data)
  
   
   return (
@@ -24,6 +38,19 @@ export default function Home() {
       >
       
       </Image>
+      {
+        data.map(blog=><div className="hero">
+        <div className="hero-content flex-col lg:flex-row-reverse">
+          <img src={blog.image} className="max-w-sm rounded-lg shadow-2xl" />
+          <div>
+           
+            <p className="py-6">{blog.Description}</p>
+            <button className="btn btn-primary">READ THE POST HERE</button>
+          </div>
+        </div>
+      </div>)
+      }
+  
      
     </>
   )
